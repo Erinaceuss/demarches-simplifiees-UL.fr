@@ -14,3 +14,31 @@
     = link_to 'Documentation', DOC_URL
     \-
     = link_to 'Aide', FAQ_URL
+    :javascript
+      !function(e,o,n){window.HSCW=o,window.HS=n,n.beacon=n.beacon||{};var t=n.beacon;t.userConfig={},t.readyQueue=[],t.config=function(e){this.userConfig=e},t.ready=function(e){this.readyQueue.push(e)},o.config={docs:{enabled:!0,baseUrl:"https://demarches-simplifiees.helpscoutdocs.com/"},contact:{enabled:!0,formId:"61882e03-5786-11e9-ab20-0ee9bb0328ce"}};var r=e.getElementsByTagName("script")[0],c=e.createElement("script");c.type="text/javascript",c.async=!0,c.src="https://djtflbt20bdde.cloudfront.net/",r.parentNode.insertBefore(c,r)}(document,window.HSCW||{},window.HS||{});
+      HS.beacon.config({
+        color: '#5CB75C',
+        icon: 'message',
+        poweredBy: 'false',
+          collection: '59eda64b0428630253621180',
+          topArticles: 'true',
+          showContactFields: 'true',
+         translation: {
+          searchLabel: 'Comment pouvons-nous vous aider ?',
+          searchErrorLabel: 'Il y a eu un soucis dans la recherche :( ',
+          sendLabel: 'Envoyer',
+          contactSuccessLabel: 'Message envoyé',
+          contactLabel: 'Nous contacter',
+          nameLabel: 'Votre nom',
+          topicLabel: 'Choisir un sujet'
+
+
+
+          },
+          topics: [
+            { val: 'admin question', label: 'J\'ai une question' },
+            { val: 'admin soucis', label: 'J\'ai un problème technique'}
+          ],
+          attachment: true,
+          instructions:'This is instructional text that goes above the form.'
+      });
