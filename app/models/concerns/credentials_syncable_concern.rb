@@ -6,7 +6,7 @@ module CredentialsSyncableConcern
   end
 
   def sync_credentials
-    if saved_change_to_email? || saved_change_to_encrypted_password?
+    if saved_change_to_email? || saved_change_to_encrypted_password? ||saved_change_to_login
       return force_sync_credentials
     end
     true

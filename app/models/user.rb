@@ -9,8 +9,11 @@ class User < ApplicationRecord
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :async,
-    :recoverable, :rememberable, :trackable, :validatable, :confirmable
+  devise  :ldap_authenticatable,  :async,
+          :rememberable, :trackable, :registerable
+
+  #divise module removed from the roriginal :
+  # :confirmable, :database_authenticatable, :registerable, :recoverable, , :validatable
 
   has_many :dossiers, dependent: :destroy
   has_many :invites, dependent: :destroy
@@ -40,9 +43,68 @@ class User < ApplicationRecord
     owns?(dossier) || invite?(dossier.id)
   end
 
+  def checkpssldap!(psw)
+    #if params[:user]
+      File.write('custom.log','params de ldap enthenticatable')
+      File.write('custom.log',self)
+
+      @config = YAML::load_file("#{Rails.root.to_s}/config/secret_config.yml")
+      host =@config['host']
+      port = @config['port']
+      base = @config['base']
+      appusername=@config['ldapuser']
+      apppassword=@config['ldappass']
+
+
+
+
+      puts 'CCCCCCCCCCCCCCCCCCCCCCCCC'
+      mdpuser =psw
+      loginuser = self.login
+
+
+      puts loginuser
+      puts mdpuser
+
+      @credentials = {
+        :method => :simple,
+        :username => appusername ,# a user w/sufficient privileges to read from AD goes here,
+        :password => apppassword # the user's password goes here
+
+      }
+      Net::LDAP.open(:host => host, :port => port,
+                     :encryption => :simple_tls,
+                     :base => base,
+                     :auth => @credentials) do |ldap|
+
+
+
+        @credentialsUser = {
+          :method => :simple,
+          :username => 'uid='+loginuser+',ou=people,dc=univ-lorraine,dc=fr' ,# login of user to auth
+          :password => ''+mdpuser # the user's password goes here
+
+        }
+
+        puts 'bind????????????'
+        puts ldap.bind(@credentialsUser)
+
+        if ldap.bind(@credentialsUser)
+          true
+        else
+          false
+        end
+      end
+    #else
+     # false
+    #end
+  end
+
   private
 
   def link_invites!
     Invite.where(email: email).update_all(user_id: id)
   end
+
+
 end

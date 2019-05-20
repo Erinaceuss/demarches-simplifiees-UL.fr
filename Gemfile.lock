@@ -355,6 +355,7 @@ GEM
     multipart-post (2.0.0)
     mustermann (1.0.3)
     nenv (0.3.0)
+    net-ldap (0.16.1)
     netrc (0.11.0)
     nio4r (2.3.1)
     nokogiri (1.10.1)
@@ -717,6 +718,7 @@ DEPENDENCIES
   logstash-event
   mailjet
   mina!
+  net-ldap
   omniauth-github
   openid_connect
   openstack
@@ -764,4 +766,4 @@ DEPENDENCIES
   zxcvbn-ruby
 
 BUNDLED WITH
-   1.17.2
+   2.0.1

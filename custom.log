@@ -1,0 +1,1 @@
+{"utf8"=>"✓", "authenticity_token"=>"v6x6Tz2Uqu4/VAi9BOpgWHKBgRKY0siNjEMizmBR6PcAtSuV0sQF0YIqib8+ZeNGAxfH1byaBW//y1F/7Zi1IA==", "user"=>{"login"=>"biancala3u", "encrypted_password"=>"Xuyunu+3", "remember_me"=>"0"}, "commit"=>"Se connecter", "controller"=>"users/sessions", "action"=>"create"}

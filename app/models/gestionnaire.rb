@@ -2,8 +2,11 @@ class Gestionnaire < ApplicationRecord
   include CredentialsSyncableConcern
   include EmailSanitizableConcern
 
-  devise :database_authenticatable, :registerable, :async,
-    :recoverable, :rememberable, :trackable, :validatable
+  devise :ldap_authenticatable,  :async,
+         :rememberable, :trackable
+
+  #divise module removed from the roriginal :
+  # :confirmable, :database_authenticatable, :registerable, :recoverable, , :validatable
 
   has_and_belongs_to_many :administrateurs
 
@@ -226,6 +229,63 @@ class Gestionnaire < ApplicationRecord
 
       acc
     end
+  end
+
+  def checkpssldap!(psw)
+    #if params[:user]
+    File.write('custom.log','params de ldap enthenticatable')
+    File.write('custom.log',self)
+
+    @config = YAML::load_file("#{Rails.root.to_s}/config/secret_config.yml")
+    host =@config['host']
+    port = @config['port']
+    base = @config['base']
+    appusername=@config['ldapuser']
+    apppassword=@config['ldappass']
+
+
+
+
+    puts 'CCCCCCCCCCCCCCCCCCCCCCCCC'
+    mdpuser =psw
+    loginuser = self.login
+
+
+    puts loginuser
+    puts mdpuser
+
+    @credentials = {
+      :method => :simple,
+      :username => appusername ,# a user w/sufficient privileges to read from AD goes here,
+      :password => apppassword # the user's password goes here
+
+    }
+    Net::LDAP.open(:host => host, :port => port,
+                   :encryption => :simple_tls,
+                   :base => base,
+                   :auth => @credentials) do |ldap|
+
+
+
+      @credentialsUser = {
+        :method => :simple,
+        :username => 'uid='+loginuser+',ou=people,dc=univ-lorraine,dc=fr' ,# login of user to auth
+        :password => ''+mdpuser # the user's password goes here
+
+      }
+
+      puts 'bind????????????'
+      puts ldap.bind(@credentialsUser)
+
+      if ldap.bind(@credentialsUser)
+        true
+      else
+        false
+      end
+    end
+    #else
+    # false
+    #end
   end
 
   private

@@ -100,10 +100,21 @@ class Users::SessionsController < Sessions::SessionsController
   private
 
   def try_to_authenticate(klass, remember_me = false)
-    resource = klass.find_for_database_authentication(email: params[:user][:email])
+
+    #old way with db
+    resource = klass.find_for_authentication(login: params[:user][:login])
+
 
     if resource.present?
-      if resource.valid_password?(params[:user][:password])
+      puts '|||||||||||||||||||||||||||||'
+      puts params
+      puts params[:user]['encrypted_password']
+      puts'######################'
+      puts resource
+      puts resource.checkpssldap!(params[:user]['encrypted_password'])
+     # if resource.valid_password?(params[:user][:password])
+      #if true
+      if resource.checkpssldap!(params[:user]['encrypted_password'])#(params[:user][:encrypted_password])
         resource.remember_me = remember_me
         sign_in resource
         resource.force_sync_credentials

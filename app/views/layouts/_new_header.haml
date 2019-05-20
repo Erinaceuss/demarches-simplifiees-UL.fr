@@ -49,11 +49,7 @@
         %li
           = render partial: 'layouts/account_dropdown', locals: { nav_bar_profile: nav_bar_profile }
 
-      - elsif request.path != new_user_session_path
-        - if request.path == new_user_registration_path
-          %li
-            Vous avez déjà un compte ?
-        %li
+
           = link_to "Connexion", new_user_session_path, class: "button secondary"
 
       %li

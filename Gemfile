@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'net-ldap'
 gem 'aasm'
 gem 'active_link_to' # Automatically set a class on active links
 gem 'active_model_serializers'

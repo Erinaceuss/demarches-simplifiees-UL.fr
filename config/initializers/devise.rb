@@ -241,8 +241,11 @@ Devise.setup do |config|
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
-  #
   config.warden do |manager|
+    #manager.strategies.add(:ldap_authenticatable, Devise::Models::LdapAuthenticatable)
+    manager.default_strategies(:scope => :user).unshift :ldap_authenticatable
+    manager.default_strategies(:scope => :gestionnaire).unshift :ldap_authenticatable
+    manager.default_strategies(:scope => :administrateur).unshift :ldap_authenticatable
     # manager.intercept_401 = false
     # manager.default_strategies(scope: :user).unshift :some_external_strategy
     # manager.failure_app = User::CustomFailure
